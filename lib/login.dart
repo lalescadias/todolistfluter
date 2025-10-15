@@ -58,6 +58,20 @@ class Login extends StatelessWidget {
                     ),
                   ),
                 ),
+                const SizedBox(height: 12),
+                SizedBox(
+                  height: 48,
+                  child: FilledButton(
+                    onPressed: null, // por enquanto desativado
+                    style: FilledButton.styleFrom(
+                      backgroundColor: Color(0xFF34C759),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Text('Entrar'),
+                  ),
+                ),
               ],
             ),
           ),
