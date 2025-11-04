@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:todolist/registo.dart';
+import 'package:todolist/tarefas_page.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -136,7 +138,7 @@ Widget _loginButton(
       ),
       onPressed: () {
         if (formKey.currentState!.validate()) {
-          // Processar login
+          Navigator.push(context, MaterialPageRoute(builder: (_) => const TarefasPage()));
         }
       },
       child: const Text(
@@ -166,7 +168,7 @@ Widget _footer(BuildContext context) {
         GestureDetector(
           onTap: () {
             // navega para página de registo
-            // Navigator.push(context, MaterialPageRoute(builder: (_) => const RegisterPage()));
+             Navigator.push(context, MaterialPageRoute(builder: (_) => const Registo()));
           },
           child: const Text(
             'Registrar',
