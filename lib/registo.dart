@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class Registo extends StatefulWidget {
+  const Registo({super.key});
   @override
-  State<Login> createState() => _LoginState();
+  State<Registo> createState() => _RegistoState();
 }
 
-class _LoginState extends State<Login> {
+class _RegistoState extends State<Registo> {
 
   final _formKey = GlobalKey<FormState>();
   final _email = TextEditingController();
@@ -35,13 +35,10 @@ class _LoginState extends State<Login> {
                     alignment: Alignment.center,
                     child: _loginButton(context, _formKey, _email, _password),
                   ),
-                  _footer(context),
                 ],
               ),
             ),
-            
           ),
-          
         ),
       ),
     );
@@ -147,37 +144,6 @@ Widget _loginButton(
           color: Colors.white,
         ),
       ),
-    ),
-  );
-}
-Widget _footer(BuildContext context) {
-  return Padding(
-    padding: const EdgeInsets.only(top: 20, bottom: 8), // espaçamento do rodapé
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Text(
-          'Ainda não tem conta? ',
-          style: TextStyle(
-            fontSize: 14,
-            color: Colors.black87,
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            // navega para página de registo
-            // Navigator.push(context, MaterialPageRoute(builder: (_) => const RegisterPage()));
-          },
-          child: const Text(
-            'Registrar',
-            style: TextStyle(
-              fontSize: 14,
-              color: Color(0xFF00D195), // mesma cor do botão
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      ],
     ),
   );
 }
