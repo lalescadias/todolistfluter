@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todolist/login.dart';
+import 'utilizador.dart';
 
 class Registo extends StatefulWidget {
   const Registo({super.key});
@@ -8,7 +9,6 @@ class Registo extends StatefulWidget {
 }
 
 class _RegistoState extends State<Registo> {
-
   final _formKey = GlobalKey<FormState>();
   final _nome = TextEditingController();
   final _email = TextEditingController();
@@ -37,7 +37,14 @@ class _RegistoState extends State<Registo> {
                   const SizedBox(height: 24),
                   Align(
                     alignment: Alignment.center,
-                    child: _registarButton(context, _formKey, _email, _password),
+                    child: _registarButton(
+                      context,
+                      _formKey,
+                      _email,
+                      _nome,
+                      _password
+                      
+                    ),
                   ),
                   _footer(context),
                 ],
@@ -71,8 +78,6 @@ Widget _nomeField(TextEditingController controller) {
     },
   );
 }
-
-
 
 Widget _emailField(TextEditingController controller) {
   return TextFormField(
@@ -138,12 +143,11 @@ Widget _header() {
         '    Cria A \nTua Conta',
         style: TextStyle(
           color: Color.fromARGB(255, 5, 7, 7),
-          fontSize:48,
-          fontWeight: FontWeight.w300, 
+          fontSize: 48,
+          fontWeight: FontWeight.w300,
           letterSpacing: -1,
         ),
       ),
-      
     ],
   );
 }
@@ -152,6 +156,7 @@ Widget _registarButton(
   BuildContext context,
   GlobalKey<FormState> formKey,
   TextEditingController emailController,
+  TextEditingController nomeController,
   TextEditingController passwordController,
 ) {
   return SizedBox(
@@ -164,7 +169,13 @@ Widget _registarButton(
       ),
       onPressed: () {
         if (formKey.currentState!.validate()) {
-          // Processar registo  
+          utilizador['nome'] = nomeController.text;
+          utilizador['email'] = emailController.text;
+
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => const Login()),
+          );
         }
       },
       child: const Text(
@@ -187,15 +198,15 @@ Widget _footer(BuildContext context) {
       children: [
         const Text(
           'Já tem conta? ',
-          style: TextStyle(
-            fontSize: 14,
-            color: Colors.black87,
-          ),
+          style: TextStyle(fontSize: 14, color: Colors.black87),
         ),
         GestureDetector(
           onTap: () {
             // navega para página de login
-             Navigator.push(context, MaterialPageRoute(builder: (_) => const Login()));
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const Login()),
+            );
           },
           child: const Text(
             'Entrar',
