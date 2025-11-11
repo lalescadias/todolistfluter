@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'criar_tarefa.dart';
-
+import 'detalhes_tarefa.dart';
 
 final List<Map<String, String>> tarefas = [
   {
@@ -23,7 +23,6 @@ class TarefasPage extends StatefulWidget {
 }
 
 class _TarefasPageState extends State<TarefasPage> {
-
   void removerTarefa(int index) {
     setState(() {
       tarefas.removeAt(index);
@@ -46,7 +45,6 @@ class _TarefasPageState extends State<TarefasPage> {
             ListaDeTarefas(tarefas: tarefas, onRemover: removerTarefa),
             _buttonCriarTarefa(context),
           ],
-          
         ),
       ),
     );
@@ -103,7 +101,7 @@ class ListaDeTarefas extends StatelessWidget {
         itemBuilder: (context, index) {
           final tarefa = tarefas[index];
           return Dismissible(
-            key: Key(tarefa['titulo'] ?? index.toString()), 
+            key: Key(tarefa['titulo'] ?? index.toString()),
             direction: DismissDirection.endToStart,
             background: Container(
               alignment: Alignment.centerRight,
@@ -114,7 +112,9 @@ class ListaDeTarefas extends StatelessWidget {
             onDismissed: (direction) {
               onRemover(index);
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Tarefa "${tarefa['titulo']}" removida')),
+                SnackBar(
+                  content: Text('Tarefa "${tarefa['titulo']}" removida'),
+                ),
               );
             },
             child: Card(
@@ -122,9 +122,29 @@ class ListaDeTarefas extends StatelessWidget {
               margin: const EdgeInsets.symmetric(vertical: 6),
               child: ListTile(
                 title: Text(
-                  tarefa['titulo'] ?? '', 
+                  tarefa['titulo'] ?? '',
                   style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
+
+                onTap: () async {
+                  final result = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => DetalhesTarefaPage(
+                        titulo: tarefa['titulo'] ?? '',
+                        descricao: tarefa['descricao'] ?? '',
+                        data: tarefa['data'] ?? '',
+                      ),
+                    ),
+                  );
+
+                  // Se o utilizador editou algo e voltou com resultado:
+                  if (result != null && result is Map<String, String>) {
+                    tarefas[index] = result;
+                    // atualiza o estado da lista
+                    (context as Element).markNeedsBuild();
+                  }
+                },
               ),
             ),
           );
@@ -144,7 +164,10 @@ Widget _buttonCriarTarefa(BuildContext context) {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
       ),
       onPressed: () {
-        Navigator.push(context, MaterialPageRoute(builder: (_) => const CriarTarefaPage()));
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const CriarTarefaPage()),
+        );
       },
       child: const Text(
         'Criar tarefa',
