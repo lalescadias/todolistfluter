@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'criar_tarefa.dart';
 import 'detalhes_tarefa.dart';
+import 'perfil.dart';
 
 final List<Map<String, String>> tarefas = [
   {
@@ -37,7 +38,7 @@ class _TarefasPageState extends State<TarefasPage> {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
         child: Column(
           children: [
-            _avatar(),
+            _avatar(context),
             SizedBox(width: 16),
             _saudacao(),
             const SizedBox(height: 20),
@@ -51,12 +52,18 @@ class _TarefasPageState extends State<TarefasPage> {
   }
 }
 
-Widget _avatar() {
-  return const CircleAvatar(
-    radius: 25,
-    backgroundImage: AssetImage('/avatar.png'),
+Widget _avatar(BuildContext context) {
+  return GestureDetector(
+    onTap: () {
+       Navigator.push(context, MaterialPageRoute(builder: (_) => const PerfilPage()));
+    },
+    child: const CircleAvatar(
+      radius: 25,
+      backgroundImage: AssetImage('/avatar.png'), 
+    ),
   );
 }
+
 
 Widget _saudacao() {
   return Column(
