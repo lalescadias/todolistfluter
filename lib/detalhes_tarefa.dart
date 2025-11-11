@@ -130,7 +130,7 @@ class _DetalhesTarefaPageState extends State<DetalhesTarefaPage> {
         child: const Text(
           'Editar tarefa',
           style: TextStyle(
-            fontSize: 18,
+            fontSize: 16,
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),
@@ -228,7 +228,7 @@ Widget _buttonCancelar(BuildContext context) {
       child: const Text(
         'Cancelar',
         style: TextStyle(
-          fontSize: 18,
+          fontSize: 16,
           fontWeight: FontWeight.bold,
           color: Colors.white,
         ),
