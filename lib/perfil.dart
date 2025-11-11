@@ -1,8 +1,46 @@
 import 'package:flutter/material.dart';
 import 'utilizador.dart';
 
-class PerfilPage extends StatelessWidget {
+class PerfilPage extends StatefulWidget {
   const PerfilPage({super.key});
+
+  @override
+  State<PerfilPage> createState() => _PerfilPageState();
+}
+
+class _PerfilPageState extends State<PerfilPage> {
+  late TextEditingController _nomeController;
+  late TextEditingController _emailController;
+
+  @override
+  void initState() {
+    super.initState();
+    // Inicializa com os valores atuais salvos
+    _nomeController = TextEditingController(text: utilizador['nome'] ?? '');
+    _emailController = TextEditingController(text: utilizador['email'] ?? '');
+  }
+
+  @override
+  void dispose() {
+    _nomeController.dispose();
+    _emailController.dispose();
+    super.dispose();
+  }
+
+  void _guardarAlteracoes() {
+    setState(() {
+      utilizador['nome'] = _nomeController.text;
+      utilizador['email'] = _emailController.text;
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Alterações guardadas com sucesso!'),
+        backgroundColor: Color(0xFF00D195),
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,40 +52,69 @@ class PerfilPage extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
-        child: utilizador.isEmpty
-            ? const Center(
-                child: Text(
-                  'Nenhum utilizador registado.',
-                  style: TextStyle(fontSize: 18),
+        child: Column(
+          children: [
+            const SizedBox(height: 20),
+            const CircleAvatar(
+              radius: 45,
+              backgroundImage: AssetImage('/avatar.png'),
+            ),
+            const SizedBox(height: 30),
+
+            // Campo Nome
+            TextField(
+              controller: _nomeController,
+              decoration: InputDecoration(
+                labelText: 'Nome',
+                filled: true,
+                fillColor: const Color(0xFFE9FBEF),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
                 ),
-              )
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 20),
-                  Center(
-                    child: CircleAvatar(
-                      radius: 40,
-                      backgroundImage: const AssetImage('assets/avatar.png'),
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-                  Text(
-                    'Nome: ${utilizador['nome']}',
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    'Email: ${utilizador['email']}',
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    'Data de nascimento: ${utilizador['dataNascimento']}',
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                ],
               ),
+            ),
+            const SizedBox(height: 16),
+
+            // Campo Email
+            TextField(
+              controller: _emailController,
+              decoration: InputDecoration(
+                labelText: 'Email',
+                filled: true,
+                fillColor: const Color(0xFFE9FBEF),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+            ),
+            const SizedBox(height: 30),
+
+            // Botão Guardar
+            SizedBox(
+              height: 45,
+              width: 180,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF00D195),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                onPressed: _guardarAlteracoes,
+                child: const Text(
+                  'Salvar Alterações',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
