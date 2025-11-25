@@ -79,7 +79,10 @@ Widget _buttonCancelar(BuildContext context) {
       ),
 
       onPressed: () => Navigator.pop(context),
-      child: const Text('Cancelar'),
+       child: const Text(
+        'Cancelar',
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+      ),
     ),
   );
 }
@@ -88,7 +91,7 @@ Widget _buttonCancelar(BuildContext context) {
 Widget _buttonCriar(BuildContext context) {
   return SizedBox(
     width: 140,
-    height: 50,
+    height: 40,
     child: ElevatedButton(
       onPressed: () {
         final titulo = _tituloController.text;
