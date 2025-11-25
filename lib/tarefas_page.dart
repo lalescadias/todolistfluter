@@ -30,17 +30,74 @@ class _TarefasPageState extends State<TarefasPage> {
     });
   }
 
+// Cabeçalho com avatar e saudação
+Widget _header(BuildContext context) {
+  return Row(
+    children: [
+      GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const PerfilPage()),
+          );
+        },
+        child: const CircleAvatar(
+          radius: 26,
+          backgroundImage: AssetImage('avatar.png'),
+        ),
+      ),
+      const SizedBox(width: 14),
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Olá, José',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
+          const SizedBox(height: 4),
+          const Text(
+            'Aqui estão as tuas tarefas',
+            style: TextStyle(fontSize: 14, color: Colors.black54),
+          ),
+        ],
+      ),
+    ],
+  );
+}
+
+// Botão para criar nova tarefa
+Widget _buttonCriarTarefa(BuildContext context) {
+  return SizedBox(
+    width: double.infinity,
+    child: ElevatedButton(
+      style: ElevatedButton.styleFrom(),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const CriarTarefaPage()),
+        );
+      },
+      child: const Text(
+        'Criar tarefa',
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+      ),
+    ),
+  );
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      appBar: AppBar(title: const Text('As Tuas Tarefas')),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Column(
           children: [
-            _avatar(context),
-            SizedBox(width: 16),
-            _saudacao(),
+            _header(context),
             const SizedBox(height: 20),
             // Lista de tarefas
             ListaDeTarefas(tarefas: tarefas, onRemover: removerTarefa),
@@ -50,44 +107,6 @@ class _TarefasPageState extends State<TarefasPage> {
       ),
     );
   }
-}
-
-Widget _avatar(BuildContext context) {
-  return GestureDetector(
-    onTap: () {
-       Navigator.push(context, MaterialPageRoute(builder: (_) => const PerfilPage()));
-    },
-    child: const CircleAvatar(
-      radius: 25,
-      backgroundImage: AssetImage('/avatar.png'), 
-    ),
-  );
-}
-
-
-Widget _saudacao() {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.center,
-    children: const [
-      Text(
-        'Olá, José!',
-        style: TextStyle(
-          color: Color(0xFF00D195),
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      SizedBox(height: 20),
-      Text(
-        'As Tuas Tarefas',
-        style: TextStyle(
-          color: Color(0xFF00D195),
-          fontSize: 20,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-    ],
-  );
 }
 
 class ListaDeTarefas extends StatelessWidget {
@@ -125,12 +144,41 @@ class ListaDeTarefas extends StatelessWidget {
               );
             },
             child: Card(
-              elevation: 0,
-              margin: const EdgeInsets.symmetric(vertical: 6),
+              color: Colors.white,
+              elevation: 1,
+              shadowColor: Colors.black12,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
               child: ListTile(
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 18,
+                  vertical: 10,
+                ),
+
                 title: Text(
                   tarefa['titulo'] ?? '',
-                  style: const TextStyle(fontWeight: FontWeight.w600),
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+
+                subtitle: tarefa['data'] != null
+                    ? Text(
+                        tarefa['data']!,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: Colors.black54,
+                        ),
+                      )
+                    : null,
+
+                trailing: Icon(
+                  Icons.arrow_forward_ios,
+                  size: 15,
+                  color: Colors.grey.shade600,
                 ),
 
                 onTap: () async {
@@ -145,10 +193,8 @@ class ListaDeTarefas extends StatelessWidget {
                     ),
                   );
 
-                  // Se o utilizador editou algo e voltou com resultado:
                   if (result != null && result is Map<String, String>) {
                     tarefas[index] = result;
-                    // atualiza o estado da lista
                     (context as Element).markNeedsBuild();
                   }
                 },
@@ -161,29 +207,3 @@ class ListaDeTarefas extends StatelessWidget {
   }
 }
 
-Widget _buttonCriarTarefa(BuildContext context) {
-  return SizedBox(
-    height: 40,
-    width: 140,
-    child: ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: const Color(0xFF00D195),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-      ),
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => const CriarTarefaPage()),
-        );
-      },
-      child: const Text(
-        'Criar tarefa',
-        style: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-      ),
-    ),
-  );
-}
