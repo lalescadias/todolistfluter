@@ -14,6 +14,7 @@ class _CriarTarefaPageState extends State<CriarTarefaPage> {
   final _dataController = TextEditingController();
 
   DateTime? _selectedDate;
+  
 
   Future<void> _selectdDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -29,13 +30,92 @@ class _CriarTarefaPageState extends State<CriarTarefaPage> {
       });
     }
   }
+//titulo
+Widget _titulo() {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: const [
+      Text(
+        'Criar Tarefa',
+        style: TextStyle(
+          color: Color(0xFF2E7D32),
+          fontSize: 26,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    ],
+  );
+}
+
+Widget _tituloDaTarefa(TextEditingController controller) {
+  return TextField(
+    controller: controller,
+    decoration: const InputDecoration(
+      labelText: 'Título da Tarefa',
+      contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+    ),
+  );
+}
+
+Widget _descricaoDaTarefa(TextEditingController controller) {
+  return TextField(
+    controller: controller,
+    maxLines: 3,
+    decoration: const InputDecoration(
+      labelText: 'Descrição da Tarefa',
+      contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+    ),
+  );
+}
+
+Widget _buttonCancelar(BuildContext context) {
+  return SizedBox(
+    height: 40,
+    width: 140,
+    child: ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.grey.shade400,
+        foregroundColor: Colors.white,
+      ),
+
+      onPressed: () => Navigator.pop(context),
+      child: const Text('Cancelar'),
+    ),
+  );
+}
+
+
+Widget _buttonCriar(BuildContext context) {
+  return SizedBox(
+    width: 140,
+    height: 50,
+    child: ElevatedButton(
+      onPressed: () {
+        final titulo = _tituloController.text;
+        final descricao = _descricaoController.text;
+        final data = _dataController.text;
+
+        tarefas.add({'titulo': titulo, 'descricao': descricao, 'data': data});
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const TarefasPage()),
+        );
+      },
+      child: const Text(
+        'Criar tarefa',
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+      ),
+    ),
+  );
+}
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Column(
           children: [
             _titulo(),
@@ -48,35 +128,23 @@ class _CriarTarefaPageState extends State<CriarTarefaPage> {
             //data da tarefa
             TextFormField(
               controller: _dataController,
-              decoration: const InputDecoration(
-                filled: true,
-                fillColor: Color(0xFFE9FBEF),
-                labelText: 'Data da Tarefa',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(12)),
-                  borderSide: BorderSide.none,
-                ),
-                suffixIcon: Icon(Icons.calendar_today),
-              ),
               readOnly: true,
               onTap: () => _selectdDate(context),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Por favor selecione a data da tarefa';
-                }
-                return null;
-              },
+              decoration: const InputDecoration(
+                labelText: 'Data da Tarefa',
+                suffixIcon: Icon(Icons.calendar_today),
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 16,
+                  horizontal: 12,
+                ),
+              ),
             ),
+
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _buttonCriar(
-                  context,
-                  _tituloController.text,
-                  _descricaoController.text,
-                  _dataController.text,
-                ),
+                _buttonCriar(context),
                 const SizedBox(width: 10),
                 _buttonCancelar(context),
               ],
@@ -88,137 +156,10 @@ class _CriarTarefaPageState extends State<CriarTarefaPage> {
   }
 }
 
-Widget _titulo() {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.center,
-    children: const [
-      Text(
-        'Criar Tarefa',
-        style: TextStyle(
-          color: Color(0xFF00D195),
-          fontSize: 32,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-    ],
-  );
-}
 
-Widget _tituloDaTarefa(TextEditingController controller) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      const Text(
-        'Título da Tarefa',
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: 20,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-      const SizedBox(height: 10),
-      TextField(
-        controller: controller,
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: const Color(0xFFE9FBEF),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide.none,
-          ),
-        ),
-      ),
-    ],
-  );
-}
 
-Widget _descricaoDaTarefa(TextEditingController controller) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      const Text(
-        'Descrição da Tarefa',
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: 20,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-      const SizedBox(height: 10),
-      TextField(
-        controller: controller,
-        maxLines: 3,
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: Color(0xFFE9FBEF),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide.none,
-          ),
-        ),
-      ),
-    ],
-  );
-}
 
-Widget _buttonCriar(
-  BuildContext context,
-  tituloTarefa,
-  descricaoTarefa,
-  dataYTarefa,
-) {
-  return SizedBox(
-    height: 40,
-    width: 140,
-    child: ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: const Color(0xFF00D195),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-      ),
-      onPressed: () {
-        final titulo = tituloTarefa;
-        final descricao = descricaoTarefa;
-        final data = dataYTarefa;
 
-        tarefas.add({'titulo': titulo, 'descricao': descricao, 'data': data});
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => const TarefasPage()),
-        );
-      },
-      child: const Text(
-        'Criar tarefa',
-        style: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-      ),
-    ),
-  );
-}
 
-Widget _buttonCancelar(BuildContext context) {
-  return SizedBox(
-    height: 40,
-    width: 140,
-    child: ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.grey,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-      ),
-      onPressed: () {
-        // voltar para pagina anterior
-        Navigator.pop(context);
-      },
-      child: const Text(
-        'Cancelar',
-        style: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-      ),
-    ),
-  );
-}
+
+
