@@ -15,7 +15,6 @@ class _PerfilPageState extends State<PerfilPage> {
   @override
   void initState() {
     super.initState();
-    // Inicializa com os valores atuais salvos
     _nomeController = TextEditingController(text: utilizador['nome'] ?? '');
     _emailController = TextEditingController(text: utilizador['email'] ?? '');
   }
@@ -34,9 +33,9 @@ class _PerfilPageState extends State<PerfilPage> {
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Alterações guardadas com sucesso!'),
-        backgroundColor: Color(0xFF00D195),
+      SnackBar(
+        content: const Text('Alterações guardadas com sucesso!'),
+        backgroundColor: Theme.of(context).colorScheme.primary,
         behavior: SnackBarBehavior.floating,
       ),
     );
@@ -45,70 +44,63 @@ class _PerfilPageState extends State<PerfilPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Perfil'),
-        backgroundColor: const Color(0xFF00D195),
+        centerTitle: true,
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             const SizedBox(height: 20),
+
+            // Avatar
             const CircleAvatar(
               radius: 45,
-              backgroundImage: AssetImage('/avatar.png'),
+              backgroundImage: AssetImage('avatar.png'),
             ),
+
             const SizedBox(height: 30),
 
             // Campo Nome
             TextField(
               controller: _nomeController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Nome',
-                filled: true,
-                fillColor: const Color(0xFFE9FBEF),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 16,
+                  horizontal: 12,
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+
+            const SizedBox(height: 20),
 
             // Campo Email
             TextField(
               controller: _emailController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Email',
-                filled: true,
-                fillColor: const Color(0xFFE9FBEF),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 16,
+                  horizontal: 12,
                 ),
               ),
             ),
-            const SizedBox(height: 30),
+
+            const SizedBox(height: 40),
 
             // Botão Guardar
             SizedBox(
-              height: 45,
-              width: 180,
+              height: 50,
+              width: 200,
               child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF00D195),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
                 onPressed: _guardarAlteracoes,
                 child: const Text(
                   'Salvar Alterações',
                   style: TextStyle(
                     fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
