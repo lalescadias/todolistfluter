@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'criar_tarefa.dart';
 import 'detalhes_tarefa.dart';
+import 'utilizador.dart';
 import 'perfil.dart';
 
 final List<Map<String, String>> tarefas = [
@@ -24,6 +25,14 @@ class TarefasPage extends StatefulWidget {
 }
 
 class _TarefasPageState extends State<TarefasPage> {
+  late TextEditingController _nomeUtilizadorController;
+ @override
+  void initState() {
+    super.initState();
+    _nomeUtilizadorController = TextEditingController(text: utilizador['nome'] ?? 'Utilizador');
+  }
+
+
   void removerTarefa(int index) {
     setState(() {
       tarefas.removeAt(index);
@@ -51,7 +60,7 @@ Widget _header(BuildContext context) {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Olá, José',
+            'Olá, ${_nomeUtilizadorController.text}!',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w600,
