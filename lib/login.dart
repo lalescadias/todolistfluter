@@ -13,6 +13,7 @@ class _LoginState extends State<Login> {
   final _email = TextEditingController();
   final _password = TextEditingController();
 
+// Campo de email
   Widget _emailField(TextEditingController controller) {
     return TextFormField(
       controller: controller,
@@ -29,7 +30,7 @@ class _LoginState extends State<Login> {
       },
     );
   }
-
+// Campo de palavra-passe
   Widget _passwordField(TextEditingController controller) {
     return TextFormField(
       controller: controller,
@@ -47,28 +48,47 @@ class _LoginState extends State<Login> {
       },
     );
   }
-
+// Cabeçalho da página de login
   Widget _header() {
     return Column(
       children: [
-        const SizedBox(height: 12),
+        const SizedBox(height: 20),
+
         const Text(
-          'Log In',
+          'Bem-vindo',
           style: TextStyle(
-            color: Color(0xFF7DD6BF),
+            color: Color(0xFF2E7D32),
             fontSize: 26,
             fontWeight: FontWeight.w700,
           ),
         ),
-        const SizedBox(height: 12),
-        Transform.rotate(
-          angle: -0.4,
-          child: Image.asset('/logo.png', width: 120, height: 120),
+        const SizedBox(height: 8),
+        const Text(
+          'Aceda à sua conta para continuar',
+          style: TextStyle(color: Colors.black54, fontSize: 14),
         ),
+
+        const SizedBox(height: 24),
+
+  // Logo da aplicação
+        SizedBox(
+          width: 240,
+          height: 240,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Image.asset(
+              'logo.png', // caminho da logo
+              fit: BoxFit.contain,
+            ),
+          ),
+        ),
+
+        const SizedBox(height: 20),
       ],
     );
   }
 
+// Botão de login
   Widget _loginButton(
     BuildContext context,
     GlobalKey<FormState> formKey,
@@ -89,50 +109,50 @@ class _LoginState extends State<Login> {
         },
         child: const Text(
           'Entrar',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-          ),
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
         ),
       ),
     );
   }
-
+// Rodapé com link para registo
   Widget _footer(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: 20,
-        bottom: 8,
-      ), // espaçamento do rodapé
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text(
-            'Ainda não tem conta? ',
-            style: TextStyle(fontSize: 14, color: Colors.black87),
+  return Padding(
+    padding: const EdgeInsets.only(top: 28),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text(
+          'Ainda não tem conta?',
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.black87,
           ),
-          GestureDetector(
-            onTap: () {
-              // navega para página de registo
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const Registo()),
-              );
-            },
-            child: const Text(
-              'Registrar',
-              style: TextStyle(
-                fontSize: 14,
-                color: Color(0xFF00D195), // mesma cor do botão
-                fontWeight: FontWeight.bold,
-              ),
+        ),
+        const SizedBox(width: 4),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const Registo()),
+            );
+          },
+          child: Text(
+            'Registar-se',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: Theme.of(context).colorScheme.primary, 
+              decoration: TextDecoration.underline,         
+              decorationThickness: 1.4,
             ),
           ),
-        ],
-      ),
-    );
-  }
+        ),
+      ],
+    ),
+  );
+}
 
+// Construção do widget de login
   @override
   Widget build(BuildContext context) {
     return Scaffold(
