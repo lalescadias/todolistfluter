@@ -60,7 +60,7 @@ class _TarefasPageState extends State<TarefasPage> {
           },
           child: const CircleAvatar(
             radius: 26,
-            backgroundImage: AssetImage('avatar.png'),
+            backgroundImage: AssetImage('assets/avatar.png'),
           ),
         ),
         const SizedBox(width: 14),
