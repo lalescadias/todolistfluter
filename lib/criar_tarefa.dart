@@ -12,7 +12,7 @@ class _CriarTarefaPageState extends State<CriarTarefaPage> {
   final _tituloController = TextEditingController();
   final _descricaoController = TextEditingController();
   final _dataController = TextEditingController();
-
+  final tarefas = [];
   DateTime? _selectedDate;
   
 
